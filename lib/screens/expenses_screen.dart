@@ -161,12 +161,16 @@ class _WalletHeader extends StatelessWidget {
                 Row(
                   children: [
                     _Pill(
-                      color: Colors.greenAccent.shade100.withAlpha((0.9 * 255).round()),
+                      color: Colors.greenAccent.shade100.withAlpha(
+                        (0.9 * 255).round(),
+                      ),
                       text: '+ ${currency.format(totalIn)}',
                     ),
                     const SizedBox(width: 8),
                     _Pill(
-                      color: Colors.redAccent.shade100.withAlpha((0.9 * 255).round()),
+                      color: Colors.redAccent.shade100.withAlpha(
+                        (0.9 * 255).round(),
+                      ),
                       text: '- ${currency.format(totalOut)}',
                     ),
                   ],
