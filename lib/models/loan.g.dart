@@ -23,9 +23,9 @@ class LoanAdapter extends TypeAdapter<Loan> {
       amount: fields[2] as double,
       loanDate: fields[3] as DateTime,
       dueDate: fields[4] as DateTime,
-      remarks: fields[5] as String,
-      isReturned: fields[6] as bool,
-      dailyInterestPercent: fields[8] as double,
+      remarks: (fields[5] as String?) ?? '',
+      isReturned: (fields[6] as bool?) ?? false,
+      dailyInterestPercent: (fields[8] as double?) ?? 0.0,
       returnDate: fields[9] as DateTime?,
     );
   }

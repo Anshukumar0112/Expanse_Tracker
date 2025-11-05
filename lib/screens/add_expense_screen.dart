@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
 import '../models/expense.dart';
@@ -58,12 +57,12 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
             segments: const [
               ButtonSegment(
                 value: 0,
-                icon: Icon(CupertinoIcons.cart_fill),
+                icon: Icon(Icons.shopping_cart_rounded),
                 label: Text('Expense'),
               ),
               ButtonSegment(
                 value: 1,
-                icon: Icon(CupertinoIcons.creditcard),
+                icon: Icon(Icons.account_balance_wallet_rounded),
                 label: Text('Loan'),
               ),
             ],
@@ -89,7 +88,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
           padding: const EdgeInsets.all(16),
           child: FilledButton.icon(
             onPressed: () => _onSubmit(context),
-            icon: const Icon(CupertinoIcons.check_mark_circled_solid),
+            icon: const Icon(Icons.check_circle_rounded),
             label: Text(_index == 0 ? 'Save Expense' : 'Save Loan'),
           ),
         ),
@@ -104,12 +103,12 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
           segments: const [
             ButtonSegment(
               value: true,
-              icon: Icon(CupertinoIcons.arrow_down_circle_fill),
+              icon: Icon(Icons.arrow_circle_down_rounded),
               label: Text('Income'),
             ),
             ButtonSegment(
               value: false,
-              icon: Icon(CupertinoIcons.arrow_up_circle_fill),
+              icon: Icon(Icons.arrow_circle_up_rounded),
               label: Text('Expense'),
             ),
           ],
@@ -155,8 +154,8 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
           },
           icon: Icon(
             _isIncome
-                ? CupertinoIcons.arrow_down_circle_fill
-                : CupertinoIcons.cart_badge_minus,
+                ? Icons.arrow_circle_down_rounded
+                : Icons.remove_shopping_cart_rounded,
           ),
           label: Text(_isIncome ? 'Quick add income' : 'Quick add expense'),
         ),
@@ -212,7 +211,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                   );
                   if (picked != null) setState(() => _loanDate = picked);
                 },
-                icon: const Icon(Icons.event),
+                icon: const Icon(Icons.event_rounded),
                 label: Text(
                   'Loan: ${_loanDate.toLocal().toString().split(' ').first}',
                 ),
@@ -230,7 +229,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                   );
                   if (picked != null) setState(() => _dueDate = picked);
                 },
-                icon: const Icon(Icons.event_available),
+                icon: const Icon(Icons.event_available_rounded),
                 label: Text(
                   'Due: ${_dueDate.toLocal().toString().split(' ').first}',
                 ),

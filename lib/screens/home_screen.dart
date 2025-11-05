@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'expenses_screen.dart';
 import 'loans_screen.dart';
 import 'add_expense_screen.dart';
@@ -26,11 +25,11 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedIndex: _index,
         destinations: const [
           NavigationDestination(
-            icon: Icon(CupertinoIcons.chart_pie_fill),
+            icon: Icon(Icons.pie_chart_rounded),
             label: 'Expenses',
           ),
           NavigationDestination(
-            icon: Icon(CupertinoIcons.creditcard),
+            icon: Icon(Icons.account_balance_wallet_rounded),
             label: 'Loans',
           ),
         ],
@@ -45,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
           );
           setState(() {});
         },
-        icon: const Icon(CupertinoIcons.add),
+        icon: const Icon(Icons.add_rounded),
         label: const Text('Add'),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

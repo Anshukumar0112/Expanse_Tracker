@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../models/expense.dart';
 import 'package:intl/intl.dart';
@@ -59,10 +58,10 @@ class ExpensesScreen extends StatelessWidget {
                       ? Colors.orange
                       : Theme.of(context).colorScheme.primary);
             final icon = e.isIncome
-                ? CupertinoIcons.arrow_down_circle_fill
+                ? Icons.arrow_circle_down_rounded
                 : (e.isLoan
-                      ? CupertinoIcons.arrow_up_right_circle_fill
-                      : CupertinoIcons.cart_fill);
+                      ? Icons.arrow_circle_up_rounded
+                      : Icons.shopping_cart_rounded);
             return Dismissible(
               key: ValueKey(e.id),
               direction: DismissDirection.endToStart,
@@ -73,10 +72,7 @@ class ExpensesScreen extends StatelessWidget {
                   color: Colors.red.shade400,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Icon(
-                  CupertinoIcons.delete_solid,
-                  color: Colors.white,
-                ),
+                child: const Icon(Icons.delete_rounded, color: Colors.white),
               ),
               onDismissed: (_) => b.delete(e.id),
               child: Card(
@@ -91,19 +87,90 @@ class ExpensesScreen extends StatelessWidget {
                     style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
                   subtitle: Text('${e.category} • ${dateFmt.format(e.date)}'),
-                  trailing: Text(
-                    (e.isIncome ? '+' : '-') + currency.format(e.amount),
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      color: e.isIncome ? Colors.green : Colors.redAccent,
-                    ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        (e.isIncome ? '+' : '-') + currency.format(e.amount),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          color: e.isIncome ? Colors.green : Colors.redAccent,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      IconButton(
+                        tooltip: 'Delete',
+                        icon: const Icon(
+                          Icons.delete_outline_rounded,
+                          size: 18,
+                        ),
+                        color: Theme.of(context).colorScheme.error,
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints.tightFor(
+                          width: 32,
+                          height: 32,
+                        ),
+                        visualDensity: VisualDensity.compact,
+                        onPressed: () async {
+                          await b.delete(e.id);
+                        },
+                      ),
+                    ],
                   ),
+                  onLongPress: () => _showExpenseActions(context, e, b),
                 ),
               ),
             );
           },
           separatorBuilder: (_, __) => const SizedBox(height: 8),
           itemCount: items.length + 1,
+        );
+      },
+    );
+  }
+
+  void _showExpenseActions(BuildContext context, Expense e, Box<Expense> box) {
+    showModalBottomSheet(
+      context: context,
+      showDragHandle: true,
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                e.title,
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+              ),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: () async {
+                        await box.delete(e.id);
+                        if (context.mounted) Navigator.pop(context);
+                      },
+                      icon: const Icon(Icons.delete_rounded),
+                      label: const Text('Delete entry'),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Tip: you can also swipe left on an entry to delete quickly.',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).hintColor,
+                ),
+              ),
+            ],
+          ),
         );
       },
     );
@@ -179,11 +246,7 @@ class _WalletHeader extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 12),
-          const Icon(
-            CupertinoIcons.chart_pie_fill,
-            color: Colors.white,
-            size: 36,
-          ),
+          const Icon(Icons.pie_chart_rounded, color: Colors.white, size: 36),
         ],
       ),
     );

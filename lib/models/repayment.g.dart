@@ -1,50 +1,44 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'expense.dart';
+part of 'repayment.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class ExpenseAdapter extends TypeAdapter<Expense> {
+class RepaymentAdapter extends TypeAdapter<Repayment> {
   @override
-  final int typeId = 0;
+  final int typeId = 2;
 
   @override
-  Expense read(BinaryReader reader) {
+  Repayment read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Expense(
+    return Repayment(
       id: fields[0] as String,
-      title: fields[1] as String,
+      loanId: fields[1] as String,
       amount: fields[2] as double,
-      category: fields[3] as String,
-      date: fields[4] as DateTime,
-      isLoan: (fields[5] as bool?) ?? false,
-      isIncome: (fields[6] as bool?) ?? false,
+      date: fields[3] as DateTime,
+      remarks: fields[4] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, Expense obj) {
+  void write(BinaryWriter writer, Repayment obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.title)
+      ..write(obj.loanId)
       ..writeByte(2)
       ..write(obj.amount)
       ..writeByte(3)
-      ..write(obj.category)
-      ..writeByte(4)
       ..write(obj.date)
-      ..writeByte(5)
-      ..write(obj.isLoan)
-      ..writeByte(6)
-      ..write(obj.isIncome);
+      ..writeByte(4)
+      ..write(obj.remarks);
   }
 
   @override
@@ -53,7 +47,7 @@ class ExpenseAdapter extends TypeAdapter<Expense> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ExpenseAdapter &&
+      other is RepaymentAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
