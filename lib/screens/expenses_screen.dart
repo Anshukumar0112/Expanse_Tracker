@@ -42,7 +42,7 @@ class ExpensesScreen extends StatelessWidget {
           );
         }
         return ListView.separated(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           itemBuilder: (context, i) {
             if (i == 0) {
               return _WalletHeader(
@@ -52,11 +52,6 @@ class ExpensesScreen extends StatelessWidget {
               );
             }
             final e = items[i - 1];
-            final color = e.isIncome
-                ? Colors.green
-                : (e.isLoan
-                      ? Colors.orange
-                      : Theme.of(context).colorScheme.primary);
             final icon = e.isIncome
                 ? Icons.arrow_circle_down_rounded
                 : (e.isLoan
@@ -66,27 +61,80 @@ class ExpensesScreen extends StatelessWidget {
               key: ValueKey(e.id),
               direction: DismissDirection.endToStart,
               background: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                margin: const EdgeInsets.symmetric(vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 alignment: Alignment.centerRight,
                 decoration: BoxDecoration(
-                  color: Colors.red.shade400,
-                  borderRadius: BorderRadius.circular(12),
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFEF4444), Color(0xFFDC2626)],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
                 ),
-                child: const Icon(Icons.delete_rounded, color: Colors.white),
+                child: const Icon(
+                  Icons.delete_rounded,
+                  color: Colors.white,
+                  size: 28,
+                ),
               ),
               onDismissed: (_) => b.delete(e.id),
-              child: Card(
+              child: Container(
+                margin: const EdgeInsets.symmetric(vertical: 4),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.04),
+                      blurRadius: 10,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
                 child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: color.withAlpha((0.15 * 255).round()),
-                    foregroundColor: color,
-                    child: Icon(icon),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  leading: Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: e.isIncome
+                            ? [const Color(0xFF10B981), const Color(0xFF059669)]
+                            : e.isLoan
+                            ? [const Color(0xFFF59E0B), const Color(0xFFD97706)]
+                            : [
+                                const Color(0xFF6366F1),
+                                const Color(0xFF8B5CF6),
+                              ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: Icon(icon, color: Colors.white, size: 24),
                   ),
                   title: Text(
                     e.title,
-                    style: const TextStyle(fontWeight: FontWeight.w600),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15,
+                      color: Color(0xFF1E293B),
+                    ),
                   ),
-                  subtitle: Text('${e.category} • ${dateFmt.format(e.date)}'),
+                  subtitle: Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Text(
+                      '${e.category} • ${dateFmt.format(e.date)}',
+                      style: const TextStyle(
+                        color: Color(0xFF64748B),
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -95,26 +143,33 @@ class ExpensesScreen extends StatelessWidget {
                         (e.isIncome ? '+' : '-') + currency.format(e.amount),
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
-                          color: e.isIncome ? Colors.green : Colors.redAccent,
+                          fontSize: 16,
+                          color: e.isIncome
+                              ? const Color(0xFF10B981)
+                              : const Color(0xFFEF4444),
                         ),
                       ),
                       const SizedBox(width: 8),
-                      IconButton(
-                        tooltip: 'Delete',
-                        icon: const Icon(
-                          Icons.delete_outline_rounded,
-                          size: 18,
+                      Container(
+                        width: 32,
+                        height: 32,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFEE2E2),
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        color: Theme.of(context).colorScheme.error,
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints.tightFor(
-                          width: 32,
-                          height: 32,
+                        child: IconButton(
+                          tooltip: 'Delete',
+                          icon: const Icon(
+                            Icons.delete_outline_rounded,
+                            size: 18,
+                          ),
+                          color: const Color(0xFFEF4444),
+                          padding: EdgeInsets.zero,
+                          visualDensity: VisualDensity.compact,
+                          onPressed: () async {
+                            await b.delete(e.id);
+                          },
                         ),
-                        visualDensity: VisualDensity.compact,
-                        onPressed: () async {
-                          await b.delete(e.id);
-                        },
                       ),
                     ],
                   ),
@@ -190,63 +245,90 @@ class _WalletHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currency = NumberFormat.currency(symbol: '₹');
-    final cs = Theme.of(context).colorScheme;
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(left: 20, right: 20, bottom: 16),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [cs.primary, cs.secondary],
+        gradient: const LinearGradient(
+          colors: [Color(0xFF6366F1), Color(0xFF8B5CF6), Color(0xFFEC4899)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Wallet Balance',
-                  style: TextStyle(
-                    color: cs.onPrimary,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  currency.format(balance),
-                  style: TextStyle(
-                    color: cs.onPrimary,
-                    fontSize: 28,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Row(
-                  children: [
-                    _Pill(
-                      color: Colors.greenAccent.shade100.withAlpha(
-                        (0.9 * 255).round(),
-                      ),
-                      text: '+ ${currency.format(totalIn)}',
-                    ),
-                    const SizedBox(width: 8),
-                    _Pill(
-                      color: Colors.redAccent.shade100.withAlpha(
-                        (0.9 * 255).round(),
-                      ),
-                      text: '- ${currency.format(totalOut)}',
-                    ),
-                  ],
-                ),
-              ],
-            ),
+        borderRadius: BorderRadius.circular(28),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF6366F1).withOpacity(0.3),
+            blurRadius: 30,
+            offset: const Offset(0, 15),
           ),
-          const SizedBox(width: 12),
-          const Icon(Icons.pie_chart_rounded, color: Colors.white, size: 36),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Wallet Balance',
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    currency.format(balance),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 36,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: -1,
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: const Icon(
+                  Icons.pie_chart_rounded,
+                  color: Colors.white,
+                  size: 32,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Row(
+            children: [
+              Expanded(
+                child: _Pill(
+                  icon: Icons.arrow_downward_rounded,
+                  color: const Color(0xFF10B981),
+                  text: currency.format(totalIn),
+                  label: 'Income',
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _Pill(
+                  icon: Icons.arrow_upward_rounded,
+                  color: const Color(0xFFEF4444),
+                  text: currency.format(totalOut),
+                  label: 'Expense',
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -254,19 +336,61 @@ class _WalletHeader extends StatelessWidget {
 }
 
 class _Pill extends StatelessWidget {
+  final IconData icon;
   final Color color;
   final String text;
-  const _Pill({required this.color, required this.text});
+  final String label;
+
+  const _Pill({
+    required this.icon,
+    required this.color,
+    required this.text,
+    required this.label,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(999),
+        color: Colors.white.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(16),
       ),
-      child: Text(text, style: const TextStyle(fontWeight: FontWeight.w600)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(icon, color: Colors.white, size: 16),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                label,
+                style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Text(
+            text,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+              fontSize: 16,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

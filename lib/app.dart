@@ -7,9 +7,15 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const baseColor = Color(0xFF4F46E5); // indigo-600
+    // Modern vibrant color palette
+    const primaryColor = Color(0xFF6366F1); // Indigo-500
+    const secondaryColor = Color(0xFFEC4899); // Pink-500
+    const tertiaryColor = Color(0xFF8B5CF6); // Violet-500
+
     final scheme = ColorScheme.fromSeed(
-      seedColor: baseColor,
+      seedColor: primaryColor,
+      secondary: secondaryColor,
+      tertiary: tertiaryColor,
       brightness: Brightness.light,
     );
 
@@ -18,31 +24,70 @@ class App extends StatelessWidget {
       title: 'Personal Expanse',
       theme: ThemeData(
         colorScheme: scheme,
-        textTheme: GoogleFonts.interTextTheme(),
+        textTheme: GoogleFonts.poppinsTextTheme(),
+        scaffoldBackgroundColor: const Color(0xFFF8FAFC),
         appBarTheme: AppBarTheme(
-          backgroundColor: scheme.surface,
-          foregroundColor: scheme.onSurface,
+          backgroundColor: Colors.transparent,
+          foregroundColor: const Color(0xFF1E293B),
           elevation: 0,
           centerTitle: true,
-          titleTextStyle: GoogleFonts.inter(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: scheme.onSurface,
+          titleTextStyle: GoogleFonts.poppins(
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+            color: const Color(0xFF1E293B),
+            letterSpacing: -0.5,
           ),
         ),
         floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: scheme.primary,
-          foregroundColor: scheme.onPrimary,
+          backgroundColor: primaryColor,
+          foregroundColor: Colors.white,
+          elevation: 8,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
         ),
         inputDecorationTheme: InputDecorationTheme(
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+          filled: true,
+          fillColor: Colors.white,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide.none,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: const BorderSide(color: Color(0xFFE2E8F0), width: 1),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide(color: primaryColor, width: 2),
+          ),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 16,
+          ),
         ),
         cardTheme: CardThemeData(
-          elevation: 1,
+          elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(20),
           ),
-          surfaceTintColor: scheme.surface,
+          color: Colors.white,
+          shadowColor: Colors.black.withOpacity(0.05),
+        ),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: Colors.white,
+          selectedItemColor: primaryColor,
+          unselectedItemColor: const Color(0xFF94A3B8),
+          elevation: 0,
+          type: BottomNavigationBarType.fixed,
+          selectedLabelStyle: GoogleFonts.poppins(
+            fontWeight: FontWeight.w600,
+            fontSize: 12,
+          ),
+          unselectedLabelStyle: GoogleFonts.poppins(
+            fontWeight: FontWeight.w500,
+            fontSize: 11,
+          ),
         ),
         useMaterial3: true,
       ),
